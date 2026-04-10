@@ -12,7 +12,7 @@ export function DownloadForm({ onSubmit, onCancel, loading }: Props) {
   const [outputDir, setOutputDir] = useState("C:\\Users\\NovoAdmin\\Downloads");
   const [cookiesPath, setCookiesPath] = useState("C:\\Users\\NovoAdmin\\Downloads\\cookies.txt");
   const [playlistEnd, setPlaylistEnd] = useState("");
-  const [spDc, setSpDc] = useState(() => localStorage.getItem("spotify_sp_dc") || "");
+  const [spDc, setSpDc] = useState(() => sessionStorage.getItem("spotify_sp_dc") || "");
   const [mode, setMode] = useState<"playlist" | "original">("playlist");
 
   const isSpotify = url.includes("spotify.com");
@@ -21,7 +21,7 @@ export function DownloadForm({ onSubmit, onCancel, loading }: Props) {
 
   function handleSpDcChange(val: string) {
     setSpDc(val);
-    localStorage.setItem("spotify_sp_dc", val);
+    sessionStorage.setItem("spotify_sp_dc", val);
   }
 
   function handleSubmit() {

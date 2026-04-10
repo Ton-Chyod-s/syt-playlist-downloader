@@ -34,6 +34,41 @@ fn is_relevant(line: &str) -> bool {
     !line.is_empty()
 }
 
+fn validate_output_dir(dir: &str) -> Result<String, String> {
+    if dir.trim().is_empty() {
+        return Err("Pasta de destino não pode ser vazia.".into());
+    }
+    if dir.contains("..") {
+        return Err("Pasta de destino inválida: não é permitido usar '..'.".into());
+    }
+    let path = std::path::Path::new(dir);
+    if !path.is_absolute() {
+        return Err("Pasta de destino deve ser um caminho absoluto.".into());
+    }
+    Ok(dir.to_string())
+}
+
+fn validate_spotify_id(id: &str) -> Result<String, String> {
+    if id.len() != 22 || !id.chars().all(|c| c.is_ascii_alphanumeric()) {
+        return Err("ID de playlist Spotify inválido.".into());
+    }
+    Ok(id.to_string())
+}
+
+fn validate_cookies_path(path: &str) -> Result<(), String> {
+    let p = std::path::Path::new(path);
+    if !p.exists() {
+        return Err("Arquivo de cookies não encontrado.".into());
+    }
+    if !p.is_file() {
+        return Err("O caminho de cookies deve apontar para um arquivo.".into());
+    }
+    if p.extension().and_then(|e| e.to_str()) != Some("txt") {
+        return Err("O arquivo de cookies deve ter extensão .txt.".into());
+    }
+    Ok(())
+}
+
 fn make_cmd(name: &str) -> Command {
     #[cfg(windows)]
     {
@@ -56,11 +91,8 @@ fn get_token_from_sp_dc(sp_dc: &str) -> Result<String, String> {
         .set("Referer", "https://open.spotify.com/")
         .call()
         .map_err(|e| match e {
-            ureq::Error::Status(code, resp) => {
-                let body = resp.into_string().unwrap_or_default();
-                format!("Erro ao obter token via sp_dc ({}): {}", code, body)
-            }
-            other => format!("Erro de rede ao obter token sp_dc: {}", other),
+            ureq::Error::Status(code, _) => format!("Erro ao obter token via sp_dc (HTTP {}).", code),
+            _ => "Erro de rede ao obter token sp_dc.".into(),
         })?;
 
     let json: serde_json::Value = resp
@@ -105,14 +137,11 @@ fn spotify_get(url: &str, token: &str) -> Result<serde_json::Value, String> {
         .set("Authorization", &format!("Bearer {}", token))
         .call()
         .map_err(|e| match e {
-            ureq::Error::Status(code, resp) => {
-                let body = resp.into_string().unwrap_or_default();
-                format!("Spotify API erro {}: {}", code, body)
-            }
-            other => format!("Erro de rede: {}", other),
+            ureq::Error::Status(code, _) => format!("Erro na API Spotify (HTTP {}).", code),
+            _ => "Erro de rede ao acessar Spotify.".into(),
         })?
         .into_json::<serde_json::Value>()
-        .map_err(|e| format!("Erro ao ler resposta: {}", e))
+        .map_err(|_| "Erro ao processar resposta da API Spotify.".into())
 }
 
 fn parse_tracks_from_items(items: &[serde_json::Value], tracks: &mut Vec<String>) {
@@ -165,11 +194,8 @@ fn get_playlist_tracks_via_embed(playlist_id: &str) -> Result<Vec<String>, Strin
         .set("Accept-Language", "en-US,en;q=0.9")
         .call()
         .map_err(|e| match e {
-            ureq::Error::Status(code, resp) => {
-                let body = resp.into_string().unwrap_or_default();
-                format!("Embed HTTP {}: {:.120}", code, body)
-            }
-            other => format!("Embed rede: {}", other),
+            ureq::Error::Status(code, _) => format!("Erro ao acessar playlist (HTTP {}).", code),
+            _ => "Erro de rede ao acessar playlist.".into(),
         })?
         .into_string()
         .map_err(|e| format!("Embed leitura: {}", e))?;
@@ -341,6 +367,7 @@ fn download_spotify(
         .filter(|s| !s.is_empty())
         .ok_or("URL da playlist inválida")?
         .to_string();
+    let playlist_id = validate_spotify_id(&playlist_id)?;
 
     emit(&app, "🎵 Buscando músicas da playlist do Spotify...");
 
@@ -373,7 +400,10 @@ fn download_spotify(
     }
 
     if let Some(end) = playlist_end {
-        tracks.truncate(end as usize);
+        let limit = (end as usize).min(10_000);
+        if limit > 0 {
+            tracks.truncate(limit);
+        }
     }
 
     emit(&app, &format!("📋 {} músicas encontradas. Baixando do YouTube Music...", tracks.len()));
@@ -383,7 +413,8 @@ fn download_spotify(
         .map(|t| format!("ytsearch1:{}", t))
         .collect();
 
-    let batch_path = std::env::temp_dir().join("yt_spotify_batch.txt");
+    let batch_name = format!("syt_batch_{}_{}.txt", std::process::id(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_millis());
+    let batch_path = std::env::temp_dir().join(batch_name);
     std::fs::write(&batch_path, queries.join("\n"))
         .map_err(|e| format!("Erro ao criar arquivo temporário: {}", e))?;
 
@@ -421,6 +452,14 @@ fn download_playlist(
     let pid_arc = state.pid.clone();
     let cancelled_arc = state.cancelled.clone();
     *cancelled_arc.lock().unwrap() = false;
+
+    let output_dir = validate_output_dir(&output_dir)?;
+
+    if let Some(ref c) = cookies_path {
+        if !c.is_empty() {
+            validate_cookies_path(c)?;
+        }
+    }
 
     if url.contains("spotify.com") {
         let sp_dc_val = sp_dc.filter(|s| !s.is_empty());
