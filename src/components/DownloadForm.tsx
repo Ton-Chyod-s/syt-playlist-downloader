@@ -16,6 +16,8 @@ export function DownloadForm({ onSubmit, onCancel, loading }: Props) {
   const [mode, setMode] = useState<"playlist" | "original">("playlist");
 
   const isSpotify = url.includes("spotify.com");
+  const isSpotifyPlaylist = isSpotify && url.includes("/playlist/");
+  const isSpotifyInvalid = isSpotify && !isSpotifyPlaylist;
 
   function handleSpDcChange(val: string) {
     setSpDc(val);
@@ -78,6 +80,11 @@ export function DownloadForm({ onSubmit, onCancel, loading }: Props) {
           onChange={(e) => setUrl(e.target.value)}
           disabled={loading}
         />
+        {isSpotifyInvalid && (
+          <small className="field-error">
+            ❌ URL inválida. Use uma playlist do Spotify: <code>open.spotify.com/playlist/...</code>
+          </small>
+        )}
       </div>
 
       {isSpotify && (
@@ -145,7 +152,7 @@ export function DownloadForm({ onSubmit, onCancel, loading }: Props) {
       )}
 
       <div className="buttons">
-        <button onClick={handleSubmit} disabled={loading || !url.trim() || (isSpotify && !spDc.trim())}>
+        <button onClick={handleSubmit} disabled={loading || !url.trim() || isSpotifyInvalid || (isSpotify && !spDc.trim())}>
           {loading ? "Baixando..." : isSpotify ? "Baixar do Spotify" : mode === "original" ? "Baixar Original" : "Baixar Playlist"}
         </button>
         {loading && (
