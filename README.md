@@ -1,5 +1,7 @@
 # SYT Playlist Downloader
 
+![License](https://img.shields.io/badge/license-MIT-green) ![Platform](https://img.shields.io/badge/platform-Windows%20x64-blue) ![Version](https://img.shields.io/badge/version-0.1.0-orange)
+
 Aplicativo desktop para baixar playlists e vídeos do YouTube e músicas do Spotify, construído com Tauri + React + TypeScript.
 
 ## Download
