@@ -1,6 +1,6 @@
 import { openUrl } from "@tauri-apps/plugin-opener";
 
-const GITHUB_URL = "https://github.com/SEU_USUARIO/SEU_REPO";
+const GITHUB_URL = "https://github.com/Ton-Chyod-s/syt-playlist-downloader";
 
 interface Props {
   onClose: () => void;
