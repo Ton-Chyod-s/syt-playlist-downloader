@@ -2,6 +2,15 @@
 
 Aplicativo desktop para baixar playlists e vídeos do YouTube e músicas do Spotify, construído com Tauri + React + TypeScript.
 
+## Download
+
+| Arquivo | Tipo | Tamanho |
+|---|---|---|
+| [SYT Playlist Downloader_0.1.0_x64-setup.exe](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases/download/v0.1.0/SYT.Playlist.Downloader_0.1.0_x64-setup.exe) | NSIS Installer ✅ Recomendado | ~3.2 MB |
+| [SYT Playlist Downloader_0.1.0_x64_en-US.msi](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases/download/v0.1.0/SYT.Playlist.Downloader_0.1.0_x64_en-US.msi) | MSI Installer | ~4.9 MB |
+
+> **Windows x64 only.** Veja todas as releases em [Releases](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases).
+
 ## Funcionalidades
 
 - **Playlist** — baixa playlist do YouTube em MP4 1080p (H.264 + MP3), compatível com qualquer dispositivo
