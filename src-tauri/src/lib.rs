@@ -134,7 +134,6 @@ fn parse_tracks_from_items(items: &[serde_json::Value], tracks: &mut Vec<String>
 fn get_playlist_tracks(token: &str, playlist_id: &str) -> Result<Vec<String>, String> {
     let mut tracks: Vec<String> = Vec::new();
 
-    // Endpoint base da playlist (retorna as primeiras faixas embutidas)
     let url = format!("https://api.spotify.com/v1/playlists/{}", playlist_id);
     let json = spotify_get(&url, token)?;
 
@@ -142,7 +141,6 @@ fn get_playlist_tracks(token: &str, playlist_id: &str) -> Result<Vec<String>, St
         parse_tracks_from_items(items, &mut tracks);
     }
 
-    // Paginar se houver mais faixas
     let mut next_url = json["tracks"]["next"].as_str().map(|s| s.to_string());
     while let Some(url) = next_url {
         let page = spotify_get(&url, token)?;
@@ -336,7 +334,6 @@ fn download_spotify(
     pid_state: Arc<Mutex<Option<u32>>>,
     cancelled: Arc<Mutex<bool>>,
 ) -> Result<(), String> {
-    // Extrai o ID da playlist da URL
     let playlist_id = url
         .split('/')
         .last()
@@ -418,7 +415,7 @@ fn download_playlist(
     client_id: Option<String>,
     client_secret: Option<String>,
     sp_dc: Option<String>,
-    mode: Option<String>,   // "playlist" | "video"
+    mode: Option<String>,
     state: State<DownloadState>,
 ) -> Result<(), String> {
     let pid_arc = state.pid.clone();
@@ -428,7 +425,6 @@ fn download_playlist(
     if url.contains("spotify.com") {
         let sp_dc_val = sp_dc.filter(|s| !s.is_empty());
 
-        // Se sp_dc não foi fornecido, exige client_id + client_secret
         let (id, secret) = if sp_dc_val.is_none() {
             let id = client_id.filter(|s| !s.is_empty())
                 .ok_or_else(|| "Forneça o cookie sp_dc OU o Client ID do Spotify.".to_string())?;
