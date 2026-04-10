@@ -13,6 +13,14 @@ Aplicativo desktop para baixar playlists e vídeos do YouTube e músicas do Spot
 
 > **Windows x64 only.** Veja todas as releases em [Releases](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases).
 
+## Screenshots
+
+<p align="center">
+  <a href="docs/screenshot-main.png"><img src="docs/screenshot-main.png" alt="Tela principal" width="30%" /></a>
+  <a href="docs/screenshot-download.png"><img src="docs/screenshot-download.png" alt="Download YouTube" width="30%" /></a>
+  <a href="docs/screenshot-spotify.png"><img src="docs/screenshot-spotify.png" alt="Download Spotify" width="30%" /></a>
+</p>
+
 ## Funcionalidades
 
 - **Playlist** — baixa playlist do YouTube em MP4 1080p (H.264 + MP3), compatível com qualquer dispositivo
