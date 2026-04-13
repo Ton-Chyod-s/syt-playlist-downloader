@@ -4,6 +4,8 @@
 
 Aplicativo desktop para baixar playlists e vídeos do YouTube e músicas do Spotify, construído com Tauri + React + TypeScript.
 
+**[Documentação completa](docs/README.md)**
+
 ## Download
 
 Baixe o instalador mais recente na página de [Releases](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases/latest):
@@ -41,7 +43,7 @@ O app verifica atualizações ao iniciar. Quando uma nova versão estiver dispon
 | [ffmpeg](https://ffmpeg.org/download.html) | Conversão e mesclagem de áudio/vídeo |
 | [Node.js](https://nodejs.org) | Necessário para yt-dlp resolver o JS do YouTube |
 
-Todos devem estar instalados e disponíveis no PATH.
+Todos devem estar instalados e disponíveis no PATH. Veja o [guia de dependências](docs/dependencias.md).
 
 ## Como usar
 

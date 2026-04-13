@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>SYT Playlist Downloader - Documentação</title>
+  <meta name="description" content="Documentação oficial do SYT Playlist Downloader — baixe playlists do YouTube e Spotify com facilidade.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <style>
+    /* Cores do tema */
+    :root {
+      --theme-color: #e03030;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: #1a1a2e;
+      border-right: none;
+    }
+
+    .sidebar .app-name a {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .sidebar-nav a {
+      color: #c9d1d9;
+      font-size: 0.9rem;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav li.active > a {
+      color: #ff6b6b;
+      text-decoration: none;
+    }
+
+    .sidebar-nav li.active > a {
+      border-right: 3px solid #e03030;
+      font-weight: 600;
+    }
+
+    .sidebar-nav p {
+      color: #8b949e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 1.2rem 0 0.3rem;
+    }
+
+    .sidebar-toggle {
+      background-color: #1a1a2e;
+      border-color: #2d3748;
+    }
+
+    .sidebar-toggle span {
+      background-color: #c9d1d9;
+    }
+
+    /* Conteúdo */
+    .content {
+      max-width: 900px;
+    }
+
+    .markdown-section {
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .markdown-section h1 {
+      border-bottom: 3px solid #e03030;
+      padding-bottom: 0.4rem;
+    }
+
+    .markdown-section h2 {
+      border-bottom: 1px solid #e8eaed;
+    }
+
+    .markdown-section a {
+      color: #e03030;
+    }
+
+    .markdown-section a:hover {
+      color: #ff4757;
+    }
+
+    .markdown-section blockquote {
+      border-left: 4px solid #e03030;
+      background: #fff5f5;
+      padding: 0.6rem 1rem;
+      border-radius: 0 6px 6px 0;
+      color: #555;
+    }
+
+    .markdown-section table tr:nth-child(2n) {
+      background-color: #f8f9fa;
+    }
+
+    /* Paginação */
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      gap: 2rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e8eaed;
+    }
+
+    .pagination-item--previous {
+      margin-right: auto;
+      text-align: left;
+    }
+
+    .pagination-item--next {
+      text-align: right;
+    }
+
+    /* Busca */
+    .search input {
+      background: #16213e;
+      border-color: #2d3748;
+      color: #c9d1d9;
+    }
+
+    .search input::placeholder {
+      color: #8b949e;
+    }
+
+    .search .results-panel {
+      background: #1a1a2e;
+      color: #c9d1d9;
+    }
+
+    .search .matching-post {
+      border-bottom-color: #2d3748;
+    }
+
+    .search .matching-post a {
+      color: #c9d1d9;
+    }
+
+    .search .matching-post a:hover {
+      color: #ff6b6b;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    window.$docsify = {
+      name: '🎬 SYT Downloader',
+      repo: 'https://github.com/Ton-Chyod-s/syt-playlist-downloader',
+      loadSidebar: true,
+      loadNavbar: false,
+      subMaxLevel: 3,
+      auto2top: true,
+      homepage: 'README.md',
+      themeColor: '#e03030',
+      search: {
+        placeholder: 'Pesquisar...',
+        noData: 'Nada encontrado.',
+        depth: 3,
+      },
+      copyCode: {
+        buttonText: 'Copiar',
+        errorText: 'Erro',
+        successText: 'Copiado!',
+      },
+      pagination: {
+        previousText: '← Anterior',
+        nextText: 'Próximo →',
+        crossChapter: true,
+        crossChapterText: true,
+      },
+      plugins: [],
+    };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-rust.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-toml.min.js"></script>
+</body>
+</html>
