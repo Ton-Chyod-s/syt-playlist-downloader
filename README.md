@@ -1,17 +1,23 @@
 # SYT Playlist Downloader
 
-![License](https://img.shields.io/badge/license-MIT-green) ![Platform](https://img.shields.io/badge/platform-Windows%20x64-blue) ![Version](https://img.shields.io/badge/version-0.1.0-orange)
+![License](https://img.shields.io/badge/license-MIT-green) ![Platform](https://img.shields.io/badge/platform-Windows%20x64-blue) ![Version](https://img.shields.io/github/v/release/Ton-Chyod-s/syt-playlist-downloader?color=orange)
 
 Aplicativo desktop para baixar playlists e vídeos do YouTube e músicas do Spotify, construído com Tauri + React + TypeScript.
 
 ## Download
 
-| Arquivo | Tipo | Tamanho |
-|---|---|---|
-| [SYT Playlist Downloader_0.1.0_x64-setup.exe](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases/download/v0.1.0/SYT.Playlist.Downloader_0.1.0_x64-setup.exe) | NSIS Installer ✅ Recomendado | ~3.2 MB |
-| [SYT Playlist Downloader_0.1.0_x64_en-US.msi](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases/download/v0.1.0/SYT.Playlist.Downloader_0.1.0_x64_en-US.msi) | MSI Installer | ~4.9 MB |
+Baixe o instalador mais recente na página de [Releases](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases/latest):
 
-> **Windows x64 only.** Veja todas as releases em [Releases](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases).
+| Arquivo | Tipo |
+|---|---|
+| `SYT.Playlist.Downloader_x.x.x_x64-setup.exe` | NSIS Installer ✅ Recomendado |
+| `SYT.Playlist.Downloader_x.x.x_x64_en-US.msi` | MSI Installer |
+
+> **Windows x64 only.**
+
+## Atualização automática
+
+O app verifica atualizações ao iniciar. Quando uma nova versão estiver disponível, um banner aparecerá com a opção de atualizar com um clique.
 
 ## Screenshots
 
@@ -64,6 +70,15 @@ npm run tauri dev
 ```
 
 ## Build
+
+O build de release é feito automaticamente via GitHub Actions ao criar uma tag:
+
+```bash
+git tag v0.x.x
+git push --tags
+```
+
+Para build local:
 
 ```bash
 npm run tauri build
