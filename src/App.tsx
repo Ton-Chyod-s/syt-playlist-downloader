@@ -2,6 +2,7 @@ import { useState } from "react";
 import { DownloadForm } from "./components/DownloadForm";
 import { LogConsole } from "./components/LogConsole";
 import { HelpModal } from "./components/HelpModal";
+import { UpdateChecker } from "./components/UpdateChecker";
 import { useDownload } from "./hooks/useDownload";
 import "./App.css";
 
@@ -27,6 +28,7 @@ function App() {
         </div>
       </header>
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
+      <UpdateChecker />
 
       <main>
         <DownloadForm onSubmit={startDownload} onCancel={cancelDownload} loading={loading} />

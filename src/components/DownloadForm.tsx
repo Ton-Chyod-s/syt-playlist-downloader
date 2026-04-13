@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
+import { downloadDir } from "@tauri-apps/api/path";
 
 interface Props {
   onSubmit: (params: { url: string; outputDir: string; cookiesPath: string; playlistEnd: number | null; clientId: string; clientSecret: string; spDc: string; mode: string }) => void;
@@ -9,11 +10,18 @@ interface Props {
 
 export function DownloadForm({ onSubmit, onCancel, loading }: Props) {
   const [url, setUrl] = useState("");
-  const [outputDir, setOutputDir] = useState("C:\\Users\\NovoAdmin\\Downloads");
-  const [cookiesPath, setCookiesPath] = useState("C:\\Users\\NovoAdmin\\Downloads\\cookies.txt");
+  const [outputDir, setOutputDir] = useState("");
+  const [cookiesPath, setCookiesPath] = useState("");
   const [playlistEnd, setPlaylistEnd] = useState("");
   const [spDc, setSpDc] = useState(() => sessionStorage.getItem("spotify_sp_dc") || "");
   const [mode, setMode] = useState<"playlist" | "original">("playlist");
+
+  useEffect(() => {
+    downloadDir().then((dir) => {
+      setOutputDir(dir);
+      setCookiesPath(`${dir}cookies.txt`);
+    });
+  }, []);
 
   const isSpotify = url.includes("spotify.com");
   const isSpotifyPlaylist = isSpotify && url.includes("/playlist/");
@@ -27,8 +35,9 @@ export function DownloadForm({ onSubmit, onCancel, loading }: Props) {
   function handleSubmit() {
     if (!url.trim()) return;
     if (isSpotify && !spDc.trim()) return;
-    const limit = playlistEnd.trim() !== "" ? parseInt(playlistEnd) : null;
-    onSubmit({ url, outputDir, cookiesPath, playlistEnd: limit && limit > 0 ? limit : null, clientId: "", clientSecret: "", spDc, mode: isSpotify ? "spotify" : mode });
+    const parsed = parseInt(playlistEnd);
+    const limit = !isNaN(parsed) && parsed > 0 ? parsed : null;
+    onSubmit({ url, outputDir, cookiesPath, playlistEnd: limit, clientId: "", clientSecret: "", spDc, mode: isSpotify ? "spotify" : mode });
   }
 
   async function browseFolderDir() {

@@ -27,3 +27,6 @@ dist-ssr
 
 # Tauri signing keys - NEVER commit the private key
 tauri-signing-key.key
+
+# Release binaries — gerados pelo GitHub Actions, não versionar
+src-tauri/releases/

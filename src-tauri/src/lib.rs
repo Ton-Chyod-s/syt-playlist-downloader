@@ -259,6 +259,7 @@ fn spawn_download(
     app: AppHandle,
     pid_state: Arc<Mutex<Option<u32>>>,
     cancelled: Arc<Mutex<bool>>,
+    cleanup_files: Vec<std::path::PathBuf>,
 ) -> Result<(), String> {
     let mut cmd = make_cmd(cmd_name);
     cmd.args(&args);
@@ -309,6 +310,10 @@ fn spawn_download(
         match child.wait() {
             Ok(status) if status.success() => {
                 *pid_state_wait.lock().unwrap() = None;
+                for f in &cleanup_files { let _ = std::fs::remove_file(f); }
+                if *cancelled.lock().unwrap() {
+                    return;
+                }
                 let _ = app.emit("download-progress", ProgressEvent {
                     msg: String::new(),
                     done: true,
@@ -317,6 +322,7 @@ fn spawn_download(
             }
             Ok(status) => {
                 *pid_state_wait.lock().unwrap() = None;
+                for f in &cleanup_files { let _ = std::fs::remove_file(f); }
                 if *cancelled.lock().unwrap() {
                     return;
                 }
@@ -334,6 +340,7 @@ fn spawn_download(
             }
             Err(e) => {
                 *pid_state_wait.lock().unwrap() = None;
+                for f in &cleanup_files { let _ = std::fs::remove_file(f); }
                 if *cancelled.lock().unwrap() {
                     return;
                 }
@@ -433,7 +440,7 @@ fn download_spotify(
         "--batch-file".into(), batch_path.to_string_lossy().into_owned(),
     ];
 
-    spawn_download("yt-dlp", args, vec![], app, pid_state, cancelled)
+    spawn_download("yt-dlp", args, vec![], app, pid_state, cancelled, vec![batch_path])
 }
 
 #[tauri::command]
@@ -510,7 +517,7 @@ fn download_playlist(
         }
 
         args.push(url);
-        spawn_download("yt-dlp", args, vec![], app, pid_arc, cancelled_arc)
+        spawn_download("yt-dlp", args, vec![], app, pid_arc, cancelled_arc, vec![])
     } else {
         let output_template = format!("{}\\%(playlist_index)s - %(title)s.%(ext)s", output_dir);
         let mut args: Vec<String> = vec![
@@ -538,7 +545,7 @@ fn download_playlist(
         }
 
         args.push(url);
-        spawn_download("yt-dlp", args, vec![], app, pid_arc, cancelled_arc)
+        spawn_download("yt-dlp", args, vec![], app, pid_arc, cancelled_arc, vec![])
     }
 }
 
@@ -577,7 +584,6 @@ pub fn run() {
         })
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
-        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![download_playlist, cancel_download])
         .run(tauri::generate_context!())

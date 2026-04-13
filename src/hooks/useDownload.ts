@@ -195,8 +195,10 @@ export function useDownload() {
     } catch (err) {
       addLog(`❌ Erro: ${err}`);
       setLoading(false);
-      unlistenRef.current = null;
-      unlisten();
+      if (unlistenRef.current) {
+        unlistenRef.current();
+        unlistenRef.current = null;
+      }
     }
   }, []);
 
