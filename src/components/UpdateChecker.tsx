@@ -30,11 +30,15 @@ export function UpdateChecker() {
       const update = await check();
       if (!update?.available) return;
 
+      let totalSize = 0;
+      let downloaded = 0;
+
       await update.downloadAndInstall((event) => {
-        if (event.event === "Progress") {
-          const percent = event.data.chunkLength && event.data.contentLength
-            ? Math.round((event.data.chunkLength / event.data.contentLength) * 100)
-            : 0;
+        if (event.event === "Started") {
+          totalSize = event.data.contentLength ?? 0;
+        } else if (event.event === "Progress") {
+          downloaded += event.data.chunkLength;
+          const percent = totalSize > 0 ? Math.round((downloaded / totalSize) * 100) : 0;
           setState({ status: "downloading", percent });
         }
       });
