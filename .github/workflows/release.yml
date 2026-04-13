@@ -40,7 +40,9 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: "SYT Playlist Downloader ${{ github.ref_name }}"
           releaseBody: |
-            Veja as mudanças nesta versão.
+            ## O que há de novo
+            - Atualização automática: o app agora verifica e instala novas versões com um clique
+            - Build e release automatizados via GitHub Actions
           releaseDraft: false
           prerelease: false
           includeUpdaterJson: true

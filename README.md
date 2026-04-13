@@ -10,8 +10,8 @@ Baixe o instalador mais recente na página de [Releases](https://github.com/Ton-
 
 | Arquivo | Tipo |
 |---|---|
-| `SYT.Playlist.Downloader_x.x.x_x64-setup.exe` | NSIS Installer ✅ Recomendado |
-| `SYT.Playlist.Downloader_x.x.x_x64_en-US.msi` | MSI Installer |
+| [SYT.Playlist.Downloader_x64-setup.exe](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases/latest) | NSIS Installer ✅ Recomendado |
+| [SYT.Playlist.Downloader_x64_en-US.msi](https://github.com/Ton-Chyod-s/syt-playlist-downloader/releases/latest) | MSI Installer |
 
 > **Windows x64 only.**
 
