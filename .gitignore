@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.py
+*.zip
+
+# Tauri signing keys - NEVER commit the private key
+tauri-signing-key.key
